@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De troya - accesorios de lujo</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Cormorant Garamond', 'serif'],
+                        'sans': ['Work Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'cream': '#FAF8F5',
+                        'gold': '#C9A961',
+                        'rose-gold': '#B76E79',
+                        'charcoal': '#2C2C2C',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-cream text-charcoal font-sans antialiased">
+
+    <!-- Marquee Banner -->
+    <div class="marquee-container bg-charcoal text-cream py-2 overflow-hidden">
+        <div class="marquee-content">
+            <span class="marquee-text">✨ Envío gratis en compras mayores a $100.000 ✨ Piezas únicas hechas a mano ✨ Envío gratis en compras mayores a $100.000 ✨ Piezas únicas hechas a mano ✨</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-gray-100 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 md:px-8 h-20 md:h-28 flex items-center justify-between relative md:grid md:grid-cols-3">
+            
+            <div class="flex items-center justify-start">
+                <button id="menu-toggle" class="text-[#2C2C2C] hover:text-[#C9A961] transition-colors p-1" aria-label="Abrir menú">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+        
+                <div class="hidden md:flex items-center gap-8 font-sans text-xs tracking-[0.25em] uppercase font-medium text-[#2C2C2C]">
+                    <a href="#products" class="hover:text-[#C9A961] transition-colors duration-300">Colección</a>
+                    <a href="#contacto" class="hover:text-[#C9A961] transition-colors duration-300">Contacto</a>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center md:col-span-1">
+                <a href="#" class="flex items-center gap-4 group py-1">
+                    <img src="img/logo.png" 
+                        alt="De Troya Accesorios Logo" 
+                        class="h-16 md:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-102"
+                        onerror="this.style.display='none'"> 
+                        
+                    <div class="flex flex-col justify-center border-l border-gray-200 pl-4">
+                        <span class="font-display text-3xl md:text-[2.3rem] tracking-[0.2em] uppercase font-semibold text-[#2C2C2C] group-hover:text-[#C9A961] transition-colors duration-300 leading-[0.9]">
+                            De Troya
+                        </span>
+                        <span class="font-sans text-[10px] md:text-[12px] tracking-[0.42em] uppercase text-gray-400 mt-2.5 font-light leading-none">
+                            Accesorios
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 md:gap-4">
+                <button id="cart-toggle" class="relative text-[#2C2C2C] hover:text-[#C9A961] transition-colors duration-300 p-2" aria-label="Ver carrito">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    <span id="cart-count" class="absolute top-1 right-1 bg-[#C9A961] text-white text-[9px] font-sans font-medium w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+            </div>
+
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="mobile-menu">
+        <nav class="mobile-menu-content">
+            <button id="menu-close" class="menu-close">&times;</button>
+            <ul class="space-y-6 text-center font-display text-2xl">
+                <li><a href="#" onclick="filtrarCategoria('todos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Inicio</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('todos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Colección</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('anillos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Anillos</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('collares', event); closeMobileMenu();" class="hover:text-gold transition-colors">Collares</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('cintos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Cintos</a></li>
+                
+                <!-- NUEVO ENLACE: Quiénes somos -->
+                <li><a href="#quienes-somos" onclick="closeMobileMenu();" class="hover:text-gold transition-colors">Nuestra historia</a></li>
+                
+                <li><a href="#contacto-section" onclick="closeMobileMenu();" class="hover:text-gold transition-colors">Contacto</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer">
+        <div class="cart-drawer-content">
+            <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+                <h2 class="font-display text-2xl">Tu Carrito</h2>
+                <button id="cart-close" class="text-3xl hover:text-gold transition-colors">&times;</button>
+            </div>
+
+            <div id="cart-items" class="cart-items flex-1 overflow-y-auto mb-6">
+                <p class="text-center text-gray-400 py-12 empty-cart-message">Tu carrito está vacío</p>
+            </div>
+
+            <div class="cart-footer">
+                <div class="flex justify-between items-center mb-4 pb-4 border-t border-gray-200 pt-4">
+                    <span class="font-display text-xl">Total:</span>
+                    <span id="cart-total" class="font-display text-2xl text-gold">$0</span>
+                </div>
+                <button id="checkout-btn" class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Finalizar Compra
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Premium -->
+    <section class="hero-premium">
+        <div class="hero-main-content">
+            <p class="hero-subtitle">Temporada de Estilo &amp; Elegancia</p>
+            <h1 class="hero-title">Descubre Tu Brillo</h1>
+            <p class="hero-description">
+                Despierta a la diosa majestuosa que hay en ti con el brillo de De Troya Accesorios.
+            </p>
+            <div class="hero-actions">
+                <a href="#products" onclick="filtrarCategoria('todos', event);" class="btn-pill btn-primary">Comprar Ahora</a>
+                <a href="#products" onclick="filtrarCategoria('todos', event);" class="btn-pill btn-secondary">Explorar</a>
+            </div>
+        </div>
+
+        <div class="pinterest-categories-grid">
+
+            <div class="pinterest-card" onclick="filtrarCategoria('anillos', event)">
+                <div class="card-text">
+                    <span class="card-tag">Categorías</span>
+                    <h3>Anillos</h3>
+                </div>
+                <div class="card-image-box">
+                    <img src="img/anillo_grande.jpeg" alt="Anillos">
+                </div>
+                <a href="#products" class="card-footer-link" onclick="filtrarCategoria('anillos', event)">Ver Anillos <span class="arrow">→</span></a>
+            </div>
+
+            <div class="pinterest-card" onclick="filtrarCategoria('collares', event)">
+                <div class="card-text">
+                    <span class="card-tag">Categorías</span>
+                    <h3>Collares</h3>
+                </div>
+                <div class="card-image-box">
+                    <img src="img/collar_corazon.jpeg" alt="Collares">
+                </div>
+                <a href="#products" class="card-footer-link" onclick="filtrarCategoria('collares', event)">Ver Collares <span class="arrow">→</span></a>
+            </div>
+
+            <div class="pinterest-card" onclick="filtrarCategoria('cintos', event)">
+                <div class="card-text">
+                    <span class="card-tag">Categorías</span>
+                        <h3>Cintos</h3>
+                </div>
+
+                    <div class="card-image-box">
+                        <img src="img/cinto.jpeg" alt="Cintos">
+                    </div>
+
+                    <a href="#products"
+                        class="card-footer-link"
+                        onclick="filtrarCategoria('cintos', event)">
+                        Ver Cintos <span class="arrow">→</span>
+                    </a>
+                </div>
+
+            </div>
+    </section>
+
+    <!-- Products Section -->
+    <!-- FIX: Un único #products-grid. El div.text-center solo contiene el título. -->
+    <section id="products" class="products-section container mx-auto px-4 py-12 md:py-20">
+
+        <div class="text-center mb-12">
+            <h2 class="font-display text-4xl md:text-5xl mb-4">Nuestra Colección</h2>
+        </div>
+
+        <!-- Skeleton Loader -->
+        <div id="skeleton-loader" class="skeleton-grid grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+
+        <!-- Products Grid — ID único, sin duplicar -->
+        <div id="products-grid" class="products-grid">
+            <!-- Las tarjetas se inyectan aquí desde script.js -->
+        </div>
+
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="product-modal">
+        <div class="product-modal-overlay"></div>
+        <div class="product-modal-content">
+            <button id="modal-close" class="modal-close">&times;</button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+
+                <!-- Product Image -->
+                <div class="modal-image-container">
+                    <img id="modal-image" src="" alt="" class="modal-image">
+                </div>
+
+                <!-- Product Details -->
+                <div class="modal-details">
+                    <h2 id="modal-title" class="font-display text-3xl md:text-4xl mb-4"></h2>
+                    <p id="modal-price" class="font-display text-2xl md:text-3xl text-gold mb-6"></p>
+
+                    <!-- Accordion: Descripción -->
+                    <div class="accordion-item mb-4">
+                        <button class="accordion-header active">
+                            <span>Descripción</span>
+                            <svg class="accordion-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content active">
+                            <p id="modal-description" class="text-gray-600"></p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion: Cuidado -->
+                    <div class="accordion-item mb-8">
+                        <button class="accordion-header">
+                            <span>Cuidado y Mantenimiento</span>
+                            <svg class="accordion-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content">
+                            <p class="text-gray-600">
+                                • Guarda tus joyas en un lugar seco y fresco<br>
+                                • Evita el contacto con perfumes y productos químicos<br>
+                                • Limpia con un paño suave después de cada uso<br>
+                                • No uses joyas durante actividades físicas intensas
+                            </p>
+                        </div>
+                    </div>
+
+                    <button id="add-to-cart-modal" class="btn-primary w-full">
+                        Agregar al Carrito
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiénes somos -->
+    <section id="quienes-somos" class="container mx-auto px-4 py-12 md:py-20">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="font-display text-4xl md:text-5xl mb-6">Nuestra Historia</h2>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+                Hola, <strong class="text-[#2C2C2C]">soy Cecilia</strong> y este proyecto nació en 2018 desde mi amor por la creación y el trabajo artesanal, impulsado por mi pasión por imaginar piezas únicas. Con el tiempo, escuchando a mis clientas, evolucioné hacia el acero y los metales brillantes para ofrecer la calidad y el brillo que prefieren hoy, sin perder nunca esa chispa de creatividad y originalidad que hace que cada accesorio sea especial.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+                Creemos que una joya no es solo un accesorio, es un recuerdo, un regalo especial y un detalle que te acompaña en tus mejores momentos.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- Contacto -->
+    <section id="contacto-section" class="contacto-section">
+        <div class="contacto-container">
+            <h2>Contacto Ejecutivo</h2>
+            <p>¿Tenés dudas sobre talles de anillos o personalizaciones? Coordiná una atención directa con Cecilia.</p>
+
+            <div class="contacto-datos">
+                <p><strong>Ubicación:</strong> San Miguel de Tucumán, Argentina</p>
+                <p><strong>Atención:</strong> Lunes a Sábados — 09:00 a 20:00</p>
+            </div>
+
+            <a href="https://wa.me/549381111222?text=Hola%20Cecilia!%20Estuve%20viendo%20tu%20catálogo%20web%20y%20quería%20consultarte%20por%20una%20joya."
+               target="_blank"
+               class="btn-pill btn-primary">
+                Contactar por WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/5493815000000" target="_blank" class="whatsapp-float" aria-label="Contactar por WhatsApp">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

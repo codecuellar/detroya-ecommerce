@@ -1,0 +1,82 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Anillo LV",
+            "price": 4500,
+            "image": "img/anillo_lv.jpeg",
+            "description": "Elegante anillo de oro 18k con diseño minimalista inspirado en las fases lunares. Pieza única hecha a mano con acabado pulido.",
+            "category": "anillos",
+            "inStock": true
+        },
+        {
+            "id": 2,
+            "name": "Collar Celestial",
+            "price": 6800,
+            "image": "img/collar_corazon2.jpeg",
+            "description": "Collar delicado de plata 925 con colgante de estrella y detalles en oro rosa. Perfecto para uso diario o ocasiones especiales.",
+            "category": "collares",
+            "inStock": true
+        },
+        {
+            "id": 3,
+            "name": "Anillo Solitario Diamante",
+            "price": 12500,
+            "image": "img/anillo.jpeg",
+            "description": "Clásico anillo solitario con diamante de 0.5 quilates montado en oro blanco 18k. Diseño atemporal para momentos inolvidables.",
+            "category": "anillos",
+            "inStock": true
+        },
+        {
+            "id": 4,
+            "name": "anillo flores",
+            "price": 3800,
+            "image": "img/flores.jpeg",
+            "description": "Pulsera ajustable de plata con símbolo de infinito. Representa amor eterno y conexión permanente.",
+            "category": "pulseras",
+            "inStock": true
+        },
+        {
+            "id": 5,
+            "name": "Aros Perla Barroca",
+            "price": 5200,
+            "image": "img/aritos.jpeg",
+            "description": "Elegantes aros con perlas barrocas naturales y montura de oro. Cada perla es única con formas orgánicas irrepetibles.",
+            "category": "aros",
+            "inStock": true
+        },
+        {
+            "id": 6,
+            "name": "Collar Cadena Serpiente",
+            "price": 7200,
+            "image": "img/collar_corazon.jpeg",
+            "description": "Sofisticado collar tipo cadena serpiente en oro amarillo 18k. Diseño versátil que combina con cualquier estilo.",
+            "category": "collares",
+            "inStock": true
+        },
+        {
+            "id": 7,
+            "name": "Anillo Tres Piedras",
+            "price": 9500,
+            "image": "img/anillo_grande.jpeg",
+            "description": "Anillo trilogy con tres diamantes representando pasado, presente y futuro. Oro blanco 18k con engastes de protección.",
+            "category": "anillos",
+            "inStock": true
+        },
+        {
+            "id": 8,
+            "name": "aritos 2",
+            "price": 4200,
+            "image": "img/aritos2.jpeg",
+            "description": "Gargantilla moderna de plata 925 con colgante de estrella pavé. Ideal para looks contemporáneos y juveniles.",
+            "category": "collares",
+            "inStock": true
+        }
+    ],
+    "settings": {
+        "whatsappNumber": "5493815000000",
+        "freeShippingThreshold": 50000,
+        "currency": "ARS",
+        "storeName": "Cecilia Joyas"
+    }
+}
