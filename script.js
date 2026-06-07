@@ -442,6 +442,26 @@ function initEventListeners() {
     });
 }
 
+// Funcionalidad para abrir la imagen del producto en pantalla completa
+document.addEventListener("DOMContentLoaded", function() {
+    const modalImage = document.getElementById('modal-image');
+    
+    if (modalImage) {
+        modalImage.addEventListener('click', function() {
+            // Agrega o quita la clase de pantalla completa al hacer clic
+            this.classList.toggle('img-fullscreen');
+        });
+    }
+
+    // Opcional: Si el usuario cierra el modal, asegurarnos de quitar el modo pantalla completa
+    const btnCerrarModal = document.getElementById('modal-close');
+    if (btnCerrarModal && modalImage) {
+        btnCerrarModal.addEventListener('click', function() {
+            modalImage.classList.remove('img-fullscreen');
+        });
+    }
+});
+
 // ================================
 // START
 // ================================

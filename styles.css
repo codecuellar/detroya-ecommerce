@@ -702,24 +702,31 @@ body {
     to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
-/* Botón cerrar */
+
+/* Botón de cerrar flotante y siempre visible */
 .modal-close {
     position: absolute;
-    top: 1.25rem;
-    right: 1.5rem;
-    font-size: 2rem;
+    top: 15px;
+    right: 15px;
+    background-color: #ffffff;
+    color: #2C2C2C;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%; /* Lo hace redondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
     line-height: 1;
-    background: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombrita para separarlo del fondo */
+    z-index: 50;
     border: none;
     cursor: pointer;
-    color: var(--color-gray-medium);
-    transition: var(--transition-fast);
-    z-index: 2;
+    transition: transform 0.2s ease;
 }
 
-.modal-close:hover {
-    color: var(--color-charcoal);
-    transform: rotate(90deg);
+.modal-close:active {
+    transform: scale(0.9); /* Pequeño efecto al tocarlo en el celu */
 }
 
 /* Imagen del modal */
@@ -945,17 +952,59 @@ body {
         aspect-ratio: 4 / 3;
     }
 
-    .product-title {
-        font-size: 1rem;
-    }
-
-    .product-price {
-        font-size: 1.1rem;
-    }
-
     .pinterest-categories-grid {
         grid-template-columns: 1fr;
         gap: 1.25rem;
         margin-top: 2.5rem;
     }
+
+    /* =========================================================
+       NUEVOS AJUSTES: TARJETAS MÁS GRANDES (ALTURA NATURAL)
+       ========================================================= */
+    
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px; /* Un poquito de aire entre columnas */
+        padding: 10px;
+        align-items: start; /* Evita que las tarjetas de distinta altura se estiren feo */
+    }
+
+    .product-card {
+        width: 100%;
+        margin: 0;
+        padding: 8px; /* Reduje un poco el padding para darle más lugar a la foto */
+        box-sizing: border-box;
+    }
+
+    /* Dejamos que la foto sea vertical y natural */
+    .product-card img {
+        width: 100%;
+        height: auto; /* La foto toma su altura real sin cortarse */
+        border-radius: 8px;
+        /* Eliminamos el aspect-ratio y el background gris */
+    }
+
+    .product-title {
+        font-size: 1.1rem;
+        margin-top: 10px; 
+    }
+
+    .product-price {
+        font-size: 1rem;
+    }
+}
+/* Clase que aplicaremos con JavaScript para pantalla completa */
+.img-fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: contain !important;
+    background-color: rgba(0, 0, 0, 0.95); /* Fondo casi negro */
+    z-index: 99999; /* Por encima de TODO */
+    cursor: zoom-out;
+    padding: 10px;
+    box-sizing: border-box;
 }
