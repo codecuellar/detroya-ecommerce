@@ -41,8 +41,8 @@ async function fetchProducts() {
                 price: parseFloat(f.Precio) || 0,
                 description: f.Descripcion || '',
                 category: f.Categoria ? f.Categoria.toLowerCase().trim() : 'general',
-                inStock: f.Disponible === true, // Si el checkbox está marcado, es true
-                // Si hay foto, tomamos la primera; si no, dejamos una imagen por defecto
+                inStock: f.Disponible === true, 
+                talles: f.Talles || null, // <--- AGREGAR ESTA LÍNEA
                 image: f.Foto && f.Foto[0] ? f.Foto[0].url : 'img/logo.png' 
             };
         });
@@ -141,23 +141,41 @@ async function initApp() {
 // ================================
 // RENDER PRODUCTS
 // ================================
+// ================================
+// RENDER PRODUCTS
+// ================================
 function renderProducts() {
     const grid = document.getElementById('products-grid');
+    const contenedorVerMas = document.getElementById('contenedor-ver-mas');
     if (!grid) return;
 
     grid.innerHTML = '';
 
+    // 1. Filtramos los productos según la categoría seleccionada
     const productosFiltrados = categoriaActual === 'todos'
         ? products
         : products.filter(p => p.category && p.category.toLowerCase() === categoriaActual.toLowerCase());
 
     if (!productosFiltrados.length) {
         grid.innerHTML = '<div class="empty-state"><p>No se encontraron productos en esta categoría.</p></div>';
+        if (contenedorVerMas) contenedorVerMas.style.display = 'none';
         return;
     }
 
+    let productosAMostrar = productosFiltrados;
+
+    // 2. Si estamos en "todos", limitamos a 15 y mostramos el botón
+    if (categoriaActual === 'todos') {
+        productosAMostrar = productosFiltrados.slice(0, 15);
+        if (contenedorVerMas) contenedorVerMas.style.display = 'block';
+    } else {
+        // En cualquier otra categoría, mostramos todos y ocultamos el botón
+        if (contenedorVerMas) contenedorVerMas.style.display = 'none';
+    }
+
+    // 3. Dibujamos las tarjetas
     const fragment = document.createDocumentFragment();
-    productosFiltrados.forEach(product => {
+    productosAMostrar.forEach(product => {
         if (!product.name || !product.image) return;
         fragment.appendChild(createProductCard(product));
     });
@@ -218,6 +236,29 @@ function openProductModal(product) {
     const header = document.getElementById('main-header');
     if (header) header.style.zIndex = '0';
 
+    // --- LÓGICA DE TALLES ---
+    const contenedorTalles = document.getElementById('modal-talles-container');
+    if (contenedorTalles) {
+        if (product.talles) {
+            const tallesArray = product.talles.split(',').map(t => t.trim());
+            let opcionesHTML = tallesArray.map(t => `<option value="${t}">Talle ${t}</option>`).join('');
+            
+            contenedorTalles.innerHTML = `
+                <label for="select-talle" class="block text-sm font-medium text-[#2C2C2C] mb-2">Seleccioná tu talle:</label>
+                <select id="select-talle" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-[#C9A961]">
+                    ${opcionesHTML}
+                </select>
+            `;
+            contenedorTalles.style.display = 'block';
+        } else {
+            contenedorTalles.style.display = 'none';
+            contenedorTalles.innerHTML = ''; 
+        }
+    }
+    // ------------------------
+
+    // Ocultar hero para que no se superponga...
+    
     modal.classList.add('active');
     document.body.classList.add('no-scroll');
 
@@ -297,7 +338,7 @@ function createCartItem(item) {
             <h4 class="cart-item-title">${item.name}</h4>
             <p class="cart-item-price">$${formatPrice(item.price)} × ${item.quantity}</p>
         </div>
-        <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Eliminar">×</button>
+        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')" aria-label="Eliminar">×</button>
     `;
     return div;
 }
@@ -342,7 +383,7 @@ function closeMobileMenu() {
 function generateWhatsAppCheckout() {
     if (!cart.length) return;
 
-    const phoneNumber = '5493815000000';
+    const phoneNumber = '5493815512107';
     let message = '¡Hola! Me gustaría realizar el siguiente pedido:\n\n';
 
     cart.forEach(item => {
@@ -432,6 +473,15 @@ function initEventListeners() {
     document.getElementById('checkout-btn').addEventListener('click', generateWhatsAppCheckout);
 
     window.addEventListener('scroll', handleHeaderScroll);
+
+    // Activar botón Ver Más para abrir el menú lateral
+    const btnVerMas = document.getElementById('btn-ver-mas');
+    if (btnVerMas) {
+        btnVerMas.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleMobileMenu(); // Reutilizamos tu función para abrir el menú
+        });
+    }
 
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {

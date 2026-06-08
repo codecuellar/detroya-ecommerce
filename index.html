@@ -99,10 +99,11 @@
             <button id="menu-close" class="menu-close">&times;</button>
             <ul class="space-y-6 text-center font-display text-2xl">
                 <li><a href="#" onclick="filtrarCategoria('todos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Inicio</a></li>
-                <li><a href="#products" onclick="filtrarCategoria('todos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Colección</a></li>
                 <li><a href="#products" onclick="filtrarCategoria('anillos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Anillos</a></li>
                 <li><a href="#products" onclick="filtrarCategoria('collares', event); closeMobileMenu();" class="hover:text-gold transition-colors">Collares</a></li>
-                <li><a href="#products" onclick="filtrarCategoria('cintos', event); closeMobileMenu();" class="hover:text-gold transition-colors">Cintos</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('aros', event); closeMobileMenu();" class="hover:text-gold transition-colors">Aros</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('pulseras', event); closeMobileMenu();" class="hover:text-gold transition-colors">Pulseras</a></li>
+                <li><a href="#products" onclick="filtrarCategoria('novedades', event); closeMobileMenu();" class="hover:text-gold transition-colors">Novedades</a></li>
                 
                 <!-- NUEVO ENLACE: Quiénes somos -->
                 <li><a href="#quienes-somos" onclick="closeMobileMenu();" class="hover:text-gold transition-colors">Nuestra historia</a></li>
@@ -174,10 +175,10 @@
                 <a href="#products" class="card-footer-link" onclick="filtrarCategoria('collares', event)">Ver Collares <span class="arrow">→</span></a>
             </div>
 
-            <div class="pinterest-card" onclick="filtrarCategoria('cintos', event)">
+            <div class="pinterest-card" onclick="filtrarCategoria('novedades', event)">
                 <div class="card-text">
                     <span class="card-tag">Categorías</span>
-                        <h3>Cintos</h3>
+                        <h3>Novedades</h3>
                 </div>
 
                     <div class="card-image-box">
@@ -218,7 +219,11 @@
         <div id="products-grid" class="products-grid">
             <!-- Las tarjetas se inyectan aquí desde script.js -->
         </div>
-
+        <div id="contenedor-ver-mas" class="text-center mt-12" style="display: none;">
+            <button id="btn-ver-mas" class="btn-pill btn-secondary mx-auto">
+                Ver todas las categorías
+            </button>
+        </div>
     </section>
 
     <!-- Product Detail Modal -->

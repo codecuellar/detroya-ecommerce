@@ -219,12 +219,13 @@ body {
     right: 0;
     width: 100%;
     max-width: 450px;
-    height: 100vh;
+    height: 100vh;               /* 100% del viewport */
     background: var(--color-cream);
     z-index: var(--z-drawer);
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;            /* Evita scroll en el contenedor padre */
 }
 
 .cart-drawer.active {
@@ -234,13 +235,16 @@ body {
 .cart-drawer-content {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    padding: 2rem;
+    height: 100%;                /* Ocupa toda la altura del drawer */
+    padding: 1.5rem;            /* Un poco menos de padding en móvil */
 }
 
 .cart-items {
     flex: 1;
     overflow-y: auto;
+    min-height: 0;              /* Necesario para que flex respete el overflow */
+    padding-right: 0.5rem;      /* Espacio para el scrollbar */
+    margin-bottom: 0.5rem;
 }
 
 .cart-item {
@@ -293,8 +297,11 @@ body {
 }
 
 .cart-footer {
+    flex-shrink: 0;
     border-top: 2px solid var(--color-gold);
-    padding-top: 1.5rem;
+    padding-top: 1.2rem;
+    padding-bottom: env(safe-area-inset-bottom, 1rem); /* Espacio seguro en iPhones con notch */
+    background-color: var(--color-cream);
 }
 
 /* ================================
@@ -906,6 +913,21 @@ body {
         padding: 2rem;
     }
 
+}
+
+/* Ajuste para pantallas muy pequeñas (ej. celulares de hasta 480px) */
+@media (max-width: 480px) {
+    .cart-drawer-content {
+        padding: 1rem;
+    }
+    .cart-footer .btn-primary {
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .cart-footer {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 0.8rem);
+    }
 }
 
 /* ================================
