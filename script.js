@@ -13,27 +13,42 @@ let categoriaActual = 'todos';
 // CONFIGURACIÓN DE LA BASE DE DATOS DINÁMICA
 // ==========================================
 // --- CONFIGURACIÓN DE AIRTABLE ---
-const AIRTABLE_BASE_ID = 'apprqbcXT5mHD31Rw'; // Copiá tu app...
+const AIRTABLE_BASE_ID = 'apprqbcXT5mHD31Rw'; 
 const AIRTABLE_TABLE_NAME = 'Nombre del prod';
-const AIRTABLE_PAT = 'patHT73bIgMPk34Oz.75ccd4cd57225eaedf3c5455b73945cafad2ba6f86a33770bd1665a8156c29c2'; // Copiá tu pat...
+const AIRTABLE_PAT = 'patHT73bIgMPk34Oz.75ccd4cd57225eaedf3c5455b73945cafad2ba6f86a33770bd1665a8156c29c2'; 
 
-// Función para cargar los productos
+// Función para cargar los productos (Soporta más de 100 productos con paginación)
 async function fetchProducts() {
-    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
+    let allRecords = [];
+    let offset = "";
+    const baseUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
     
     try {
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Bearer ${AIRTABLE_PAT}`
-            }
-        });
-        
-        if (!response.ok) throw new Error('No se pudo conectar con Airtable');
-        
-        const data = await response.json();
-        
-        // Transformamos los datos crudos de Airtable al formato que tu web espera
-        const products = data.records.map(record => {
+        // El bucle se va a repetir mientras Airtable nos siga dando un "offset" (un identificador de página siguiente)
+        do {
+            // Si hay un offset de la página anterior, lo pegamos en la URL
+            const url = offset ? `${baseUrl}?offset=${offset}` : baseUrl;
+            
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${AIRTABLE_PAT}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('No se pudo conectar con Airtable');
+            
+            const data = await response.json();
+            
+            // Metemos los registros de esta página dentro de nuestro array acumulador
+            allRecords = allRecords.concat(data.records);
+            
+            // Si hay otra página, Airtable nos da un nuevo offset. Si no hay más, dará undefined y el bucle frena.
+            offset = data.offset || "";
+            
+        } while (offset !== "");
+
+        // Una vez que juntamos TODOS los registros (los 200+), recién ahí los transformamos
+        const products = allRecords.map(record => {
             const f = record.fields;
             return {
                 id: record.id,
@@ -42,16 +57,16 @@ async function fetchProducts() {
                 description: f.Descripcion || '',
                 category: f.Categoria ? f.Categoria.toLowerCase().trim() : 'general',
                 inStock: f.Disponible === true, 
-                talles: f.Talles || null, // <--- AGREGAR ESTA LÍNEA
+                talles: f.Talles || null,
                 image: f.Foto && f.Foto[0] ? f.Foto[0].url : 'img/logo.png' 
             };
         });
 
-        console.log("Productos cargados:", products);
+        console.log("¡Total real de productos cargados desde Airtable!", products.length);
         return { products: products };
         
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en fetchProducts:', error);
         return { products: [] };
     }
 }
