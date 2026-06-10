@@ -164,9 +164,9 @@ function renderProducts() {
 
     let productosAMostrar = productosFiltrados;
 
-    // 2. Si estamos en "todos", limitamos a 15 y mostramos el botón
+    // 2. Si estamos en "todos", limitamos a 24 y mostramos el botón
     if (categoriaActual === 'todos') {
-        productosAMostrar = productosFiltrados.slice(0, 15);
+        productosAMostrar = productosFiltrados.slice(0, 24);
         if (contenedorVerMas) contenedorVerMas.style.display = 'block';
     } else {
         // En cualquier otra categoría, mostramos todos y ocultamos el botón
