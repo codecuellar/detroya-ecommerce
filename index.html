@@ -115,17 +115,18 @@
 
     <!-- Cart Drawer -->
     <div id="cart-drawer" class="cart-drawer">
-        <div class="cart-drawer-content">
-            <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
+        <div class="cart-drawer-content flex flex-col h-[100dvh]">
+            
+            <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200 shrink-0 pt-4 md:pt-0">
                 <h2 class="font-display text-2xl">Tu Carrito</h2>
                 <button id="cart-close" class="text-3xl hover:text-gold transition-colors">&times;</button>
             </div>
 
-            <div id="cart-items" class="cart-items flex-1 overflow-y-auto mb-6">
+            <div id="cart-items" class="cart-items flex-1 overflow-y-auto min-h-0 mb-4 pr-2">
                 <p class="text-center text-gray-400 py-12 empty-cart-message">Tu carrito está vacío</p>
             </div>
 
-            <div class="cart-footer">
+            <div class="cart-footer shrink-0 mt-auto pb-8 md:pb-6">
                 <div class="flex justify-between items-center mb-4 pb-4 border-t border-gray-200 pt-4">
                     <span class="font-display text-xl">Total:</span>
                     <span id="cart-total" class="font-display text-2xl text-gold">$0</span>
@@ -159,7 +160,7 @@
                     <h3>Anillos</h3>
                 </div>
                 <div class="card-image-box">
-                    <img src="img/anillo_grande.jpeg" alt="Anillos">
+                    <img src="img/anillo.png" alt="Anillos">
                 </div>
                 <a href="#products" class="card-footer-link" onclick="filtrarCategoria('anillos', event)">Ver Anillos <span class="arrow">→</span></a>
             </div>
@@ -170,7 +171,7 @@
                     <h3>Collares</h3>
                 </div>
                 <div class="card-image-box">
-                    <img src="img/collar_corazon.jpeg" alt="Collares">
+                    <img src="img/Chat.png" alt="Collares">
                 </div>
                 <a href="#products" class="card-footer-link" onclick="filtrarCategoria('collares', event)">Ver Collares <span class="arrow">→</span></a>
             </div>
@@ -188,7 +189,7 @@
                     <a href="#products"
                         class="card-footer-link"
                         onclick="filtrarCategoria('cintos', event)">
-                        Ver Cintos <span class="arrow">→</span>
+                        Ver Novedades <span class="arrow">→</span>
                     </a>
                 </div>
 
