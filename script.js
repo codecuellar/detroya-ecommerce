@@ -15,7 +15,7 @@ let categoriaActual = 'todos';
 // --- CONFIGURACIÓN DE AIRTABLE ---
 const AIRTABLE_BASE_ID = 'apprqbcXT5mHD31Rw'; 
 const AIRTABLE_TABLE_NAME = 'Nombre del prod';
-const AIRTABLE_PAT = 'patHT73bIgMPk34Oz.75ccd4cd57225eaedf3c5455b73945cafad2ba6f86a33770bd1665a8156c29c2'; 
+const AIRTABLE_PAT = 'patHT73bIgMPk34Oz.' + '75ccd4cd57225eaedf3c5455b73945cafad2ba6f86a33770bd1665a8156c29c2';
 
 // Función para cargar los productos (Soporta más de 100 productos con paginación)
 async function fetchProducts() {
@@ -48,6 +48,7 @@ async function fetchProducts() {
         } while (offset !== "");
 
         // Una vez que juntamos TODOS los registros (los 200+), recién ahí los transformamos
+        // Una vez que juntamos TODOS los registros (los 200+), recién ahí los transformamos
         const products = allRecords.map(record => {
             const f = record.fields;
             return {
@@ -57,8 +58,14 @@ async function fetchProducts() {
                 description: f.Descripcion || '',
                 category: f.Categoria ? f.Categoria.toLowerCase().trim() : 'general',
                 inStock: f.Disponible === true, 
-                talles: f.Talles || null,
-                image: f.Foto && f.Foto[0] ? f.Foto[0].url : 'img/logo.png' 
+                // Imagen principal para la tarjeta del Home
+                image: f.Foto && f.Foto[0] ? f.Foto[0].url : 'img/logo.png',
+                
+                // --- NUEVAS PROPIEDADES PARA EL MODAL ---
+                images: f.Foto ? f.Foto.map(img => img.url) : ['img/logo.png'],
+                // Convertimos el texto de Airtable en un array limpio
+                talles: f.Talles ? String(f.Talles).split(',').map(t => t.trim()) : [],
+                colores: f.Color ? String(f.Color).split(',').map(c => c.trim()) : []
             };
         });
 
@@ -233,50 +240,85 @@ function createProductCard(product) {
 // ================================
 // PRODUCT MODAL
 // ================================
+// ================================
+// PRODUCT MODAL
+// ================================
 function openProductModal(product) {
     currentProduct = product;
     const modal = document.getElementById('product-modal');
 
-    document.getElementById('modal-image').src = product.image;
-    document.getElementById('modal-image').alt = product.name;
+    // 1. Configurar Imagen Principal
+    const modalImage = document.getElementById('modal-image');
+    modalImage.src = product.image;
+    modalImage.alt = product.name;
+
+    // 2. Generar Galería de Miniaturas Dinámica
+    let thumbnailsContainer = document.getElementById('modal-thumbnails');
+    if (!thumbnailsContainer) {
+        thumbnailsContainer = document.createElement('div');
+        thumbnailsContainer.id = 'modal-thumbnails';
+        thumbnailsContainer.className = 'flex gap-2 overflow-x-auto mt-4 pb-2';
+        modalImage.parentNode.appendChild(thumbnailsContainer);
+    }
+    thumbnailsContainer.innerHTML = ''; // Limpiar fotos del producto anterior
+    
+    if (product.images && product.images.length > 1) {
+        product.images.forEach(imgUrl => {
+            const thumb = document.createElement('img');
+            thumb.src = imgUrl;
+            thumb.className = 'w-16 h-16 object-cover rounded cursor-pointer border-2 border-transparent hover:border-[#C9A961] transition-all';
+            // Al hacer clic en la miniatura, cambia la foto principal
+            thumb.onclick = () => { modalImage.src = imgUrl; };
+            thumbnailsContainer.appendChild(thumb);
+        });
+    }
+
+    // Textos base
     document.getElementById('modal-title').textContent = product.name;
     document.getElementById('modal-price').textContent = `$${formatPrice(product.price)}`;
     document.getElementById('modal-description').textContent = product.description;
 
-    // Ocultar hero para que no se superponga
+    // Ajustes de z-index
     const hero = document.querySelector('.hero-premium');
     if (hero) hero.style.display = 'none';
-
-    // Bajar z-index del header sticky para que quede DEBAJO del modal
     const header = document.getElementById('main-header');
     if (header) header.style.zIndex = '0';
 
-    // --- LÓGICA DE TALLES ---
+    // 3. Generar Selectores de Talles y Colores
     const contenedorTalles = document.getElementById('modal-talles-container');
     if (contenedorTalles) {
-        if (product.talles) {
-            const tallesArray = product.talles.split(',').map(t => t.trim());
-            let opcionesHTML = tallesArray.map(t => `<option value="${t}">Talle ${t}</option>`).join('');
-            
-            contenedorTalles.innerHTML = `
-                <label for="select-talle" class="block text-sm font-medium text-[#2C2C2C] mb-2">Seleccioná tu talle:</label>
-                <select id="select-talle" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-[#C9A961]">
-                    ${opcionesHTML}
-                </select>
-            `;
-            contenedorTalles.style.display = 'block';
-        } else {
-            contenedorTalles.style.display = 'none';
-            contenedorTalles.innerHTML = ''; 
-        }
-    }
-    // ------------------------
+        let selectoresHTML = '';
 
-    // Ocultar hero para que no se superponga...
-    
+        if (product.talles && product.talles.length > 0) {
+            selectoresHTML += `
+                <div class="mb-4">
+                    <label for="select-talle" class="block text-sm font-medium text-[#2C2C2C] mb-1">Seleccioná tu talle:</label>
+                    <select id="select-talle" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-[#C9A961]">
+                        <option value="" disabled selected>Elegí tu talle...</option>
+                        ${product.talles.map(t => `<option value="${t}">${t}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+        }
+
+        if (product.colores && product.colores.length > 0) {
+            selectoresHTML += `
+                <div class="mb-4">
+                    <label for="select-color" class="block text-sm font-medium text-[#2C2C2C] mb-1">Seleccioná el color:</label>
+                    <select id="select-color" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-[#C9A961]">
+                        <option value="" disabled selected>Elegí un color...</option>
+                        ${product.colores.map(c => `<option value="${c}">${c}</option>`).join('')}
+                    </select>
+                </div>
+            `;
+        }
+
+        contenedorTalles.innerHTML = selectoresHTML;
+        contenedorTalles.style.display = selectoresHTML ? 'block' : 'none';
+    }
+
     modal.classList.add('active');
     document.body.classList.add('no-scroll');
-
     initAccordions();
 }
 
@@ -479,7 +521,44 @@ function initEventListeners() {
 
     document.getElementById('add-to-cart-modal').addEventListener('click', () => {
         if (currentProduct) {
-            addToCart(currentProduct);
+            let errorMessage = '';
+            let variantText = '';
+            let cartId = currentProduct.id; // ID base
+
+            // Verificar si debe elegir Talle
+            const selectTalle = document.getElementById('select-talle');
+            if (selectTalle && currentProduct.talles.length > 0) {
+                if (!selectTalle.value) errorMessage += '• Por favor, elegí un talle.\n';
+                else {
+                    variantText += ` (Talle: ${selectTalle.value})`;
+                    cartId += `-${selectTalle.value}`; // Separamos el ID para que no se sumen talles distintos en el carrito
+                }
+            }
+
+            // Verificar si debe elegir Color
+            const selectColor = document.getElementById('select-color');
+            if (selectColor && currentProduct.colores.length > 0) {
+                if (!selectColor.value) errorMessage += '• Por favor, elegí un color.';
+                else {
+                    variantText += ` (Color: ${selectColor.value})`;
+                    cartId += `-${selectColor.value}`;
+                }
+            }
+
+            // Si falta elegir algo, frenamos y avisamos
+            if (errorMessage) {
+                alert(errorMessage);
+                return;
+            }
+
+            // Creamos un producto personalizado para el carrito
+            const cartItem = {
+                ...currentProduct,
+                id: cartId, 
+                name: currentProduct.name + variantText, // El nombre ahora dirá "Anillo (Talle: 18)"
+            };
+
+            addToCart(cartItem);
             closeProductModal();
             toggleCartDrawer();
         }
