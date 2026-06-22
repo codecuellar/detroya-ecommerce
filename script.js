@@ -51,6 +51,19 @@ async function fetchProducts() {
         // Una vez que juntamos TODOS los registros (los 200+), recién ahí los transformamos
         const products = allRecords.map(record => {
             const f = record.fields;
+            
+            // --- OPTIMIZACIÓN DE IMÁGENES ---
+            // Evaluamos si Airtable ya generó las miniaturas optimizadas para la foto principal
+            const fotoPrincipal = f.Foto && f.Foto[0];
+            const imagenOptimizada = (fotoPrincipal && fotoPrincipal.thumbnails && fotoPrincipal.thumbnails.large) 
+                ? fotoPrincipal.thumbnails.large.url 
+                : (fotoPrincipal ? fotoPrincipal.url : 'img/logo.png');
+
+            // Hacemos lo mismo para el array de todas las fotos del modal
+            const listaImagenesOptimizadas = f.Foto 
+                ? f.Foto.map(img => (img.thumbnails && img.thumbnails.large) ? img.thumbnails.large.url : img.url)
+                : ['img/logo.png'];
+
             return {
                 id: record.id,
                 name: f.Nombre || 'Sin nombre',
@@ -58,12 +71,11 @@ async function fetchProducts() {
                 description: f.Descripcion || '',
                 category: f.Categoria ? f.Categoria.toLowerCase().trim() : 'general',
                 inStock: f.Disponible === true, 
-                // Imagen principal para la tarjeta del Home
-                image: f.Foto && f.Foto[0] ? f.Foto[0].url : 'img/logo.png',
                 
-                // --- NUEVAS PROPIEDADES PARA EL MODAL ---
-                images: f.Foto ? f.Foto.map(img => img.url) : ['img/logo.png'],
-                // Convertimos el texto de Airtable en un array limpio
+                // Usamos las variables optimizadas que pesan muy pocos KB
+                image: imagenOptimizada,
+                images: listaImagenesOptimizadas,
+                
                 talles: f.Talles ? String(f.Talles).split(',').map(t => t.trim()) : [],
                 colores: f.Color ? String(f.Color).split(',').map(c => c.trim()) : []
             };
