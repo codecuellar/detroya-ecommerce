@@ -286,13 +286,15 @@ function openProductModal(product) {
     }
 
     // Textos base
+    document.getElementById('modal-image').src = product.image;
+    document.getElementById('modal-image').alt = product.name;
     document.getElementById('modal-title').textContent = product.name;
     document.getElementById('modal-price').textContent = `$${formatPrice(product.price)}`;
     document.getElementById('modal-description').textContent = product.description;
 
     // Ajustes de z-index
-    const hero = document.querySelector('.hero-premium');
-    if (hero) hero.style.display = 'none';
+    //const hero = document.querySelector('.hero-premium');
+    //if (hero) hero.style.display = 'none';
     const header = document.getElementById('main-header');
     if (header) header.style.zIndex = '0';
 
@@ -341,14 +343,14 @@ function closeProductModal() {
     currentProduct = null;
 
     // Restaurar hero
-    const hero = document.querySelector('.hero-premium');
-    if (hero) hero.style.display = '';
+    //const hero = document.querySelector('.hero-premium');
+    //if (hero) hero.style.display = '';
 
     // Restaurar z-index del header
     const header = document.getElementById('main-header');
     if (header) header.style.zIndex = '';
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    //window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ================================
